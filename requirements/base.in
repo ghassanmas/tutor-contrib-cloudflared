@@ -1,0 +1,4 @@
+tutor>=16
+tld
+requests
+click==8.1.3 # Version 8.1.4 has problem wiht mypy

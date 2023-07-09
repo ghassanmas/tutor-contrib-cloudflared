@@ -1,0 +1,10 @@
+-r base.txt
+black
+coverage
+pip-tools
+pylint
+pyinstaller
+types-docutils
+types-PyYAML
+types-setuptools
+types-requests

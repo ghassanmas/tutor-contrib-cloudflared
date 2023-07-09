@@ -3,25 +3,21 @@ from __future__ import annotations
 import os
 import os.path
 from glob import glob
-import subprocess
 
-import click
 import pkg_resources
 import appdirs
 import typing as t
+from typing import cast
 
 from tutor import hooks
 from tutor import config
-from tutor import fmt
-from tutor.commands.context import Context
-from tutor.utils import execute
 from tutor.__about__ import __app__
 
 from .__about__ import __version__
-from .utils import check_ns, strip_out_subdomains_if_needed, is_default_domain, is_same_domain, is_one_or_less_subdomain, get_first_level_domain
-from .constants import CLOUDFLARE_NS_SETUP_URL, TUTOR_PUBLIC_HOSTS
+from .constants import TUTOR_PUBLIC_HOSTS
 from .cli import cloudflared as cloudfalred_group
 from .cli import get_tunnel_uuid
+
 ########################################
 # CONFIGURATION
 ########################################
@@ -35,7 +31,7 @@ hooks.Filters.CONFIG_DEFAULTS.add_items(
         ("CLOUDFLARED_DOCKER_IMAGE", "cloudflared"),
         ("CLOUDFLARED_TUNNEL_NAME", "openedx"),
         ("CLOUDFLARED_TUNNEL_UUID", ""),
-        ("CLOUDFLARED_PUBLIC_HOSTS", TUTOR_PUBLIC_HOSTS)
+        ("CLOUDFLARED_PUBLIC_HOSTS", TUTOR_PUBLIC_HOSTS),
     ]
 )
 
@@ -71,8 +67,8 @@ hooks.Filters.CONFIG_DEFAULTS.add_items(
 
 with open(
     pkg_resources.resource_filename(
-        "tutorcloudflared", os.path.join(
-            "templates", "cloudflared", "tasks", "cloudflared", "init")
+        "tutorcloudflared",
+        os.path.join("templates", "cloudflared", "tasks", "cloudflared", "init"),
     ),
     encoding="utf8",
 ) as f:
@@ -82,7 +78,7 @@ with open(
 # For each task added to MY_INIT_TASKS, we load the task template
 # and add it to the CLI_DO_INIT_TASKS filter, which tells Tutor to
 # run it as part of the `init` job.
-    # Now you have init_task, you may want to add it to CLI_DO_INIT_TASKS or perform other actions.
+# Now you have init_task, you may want to add it to CLI_DO_INIT_TASKS or perform other actions.
 
 
 ########################################
@@ -177,8 +173,7 @@ for path in glob(
     )
 ):
     with open(path, encoding="utf-8") as patch_file:
-        hooks.Filters.ENV_PATCHES.add_item(
-            (os.path.basename(path), patch_file.read()))
+        hooks.Filters.ENV_PATCHES.add_item((os.path.basename(path), patch_file.read()))
 
 
 def iter_domains() -> t.Iterable[tuple[str, str]]:
@@ -186,9 +181,17 @@ def iter_domains() -> t.Iterable[tuple[str, str]]:
     root = appdirs.user_data_dir(__app__)
     print(root)
     configs = config.load(root)
-    hosts_keys = configs.get('CLOUDFLARED_PUBLIC_HOSTS')
-    domains = dict(zip(hosts_keys, [configs.get(
-        host) for host in hosts_keys if configs.get(host) is not None]))
+    hosts_keys = cast(t.List[str], configs.get("CLOUDFLARED_PUBLIC_HOSTS"))
+    domains = dict(
+        zip(
+            hosts_keys,
+            [
+                cast(str, configs.get(host))
+                for host in hosts_keys
+                if cast(str, configs.get(host)) is not None
+            ],
+        )
+    )
     yield from domains.items()
 
 
