@@ -22,7 +22,7 @@ The tutor clouflared plugin, is a plugin that integrates Open edX tutor tool, wi
     - [2.3.4 Launch it](#234-launch-it)
 - [3. Configuration](#3-configuation)
 - [4. Caveats](#4-caveats)
-  - [4.1 subdomain level]
+  - [4.1 subdomain level](#41-subdomain-level)
   - [4.2 hosts that are not subdomains of the LMS](#42-when-mfe_host-and-preview_host-not-a-suddomain-of-the-lms_host)
   - [4.3 The docker image](#43-the-docker-image)
 - [5. License](#5-license)
@@ -72,7 +72,8 @@ To utilzie this plugin,
 This plugin has a specific command that  shall do all the necessary checks:
 
 ```bash
-tutor cloudflared doctor
+tutor plguins enable cloudflared
+tutor config save
 ```
 
 {{ cli.doctor.__doc__ }}
