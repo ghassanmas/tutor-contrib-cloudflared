@@ -1,0 +1,8 @@
+# Create the tunnel 
+cloudflared login
+cloudflared tunnel info {{ CLOUDFLARED_TUNNEL_NAME }} || cloudflared tunnel create {{ CLOUDFLARED_TUNNEL_NAME }}
+# Set tunnel UUID as tutor config 
+{% for domain_name, domain_value in iter_domains() %}
+echo "creating route config for {{ domain_name }} with value of {{ domain_value }}"
+cloudflared --overwrite-dns tunnel route dns  {{ CLOUDFLARED_TUNNEL_NAME }} {{ domain_value }}
+{% endfor %}

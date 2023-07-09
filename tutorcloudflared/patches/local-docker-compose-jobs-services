@@ -1,0 +1,7 @@
+cloudflared-job:
+  image: {{ CLOUDFLARED_DOCKER_IMAGE }}
+  volumes:
+    - ../../data/cloudflared:/home/nonroot/.cloudflared
+    - ../../data/cloudflared:/root/.cloudflared
+    - ../plugins/cloudflared/apps/config.yml:/root/.cloudflared/config.yml
+  restart: always

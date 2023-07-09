@@ -1,0 +1,11 @@
+tunnel: {{ CLOUDFLARED_TUNNEL_UUID }}
+credentials-file: /root/.cloudflared/{{ CLOUDFLARED_TUNNEL_UUID }}.json
+ingress:
+{% for domain_name, domain_value in iter_domains() %}
+  - hostname: {{ domain_value }}
+    service: http://caddy:{{ CADDY_HTTP_PORT }}
+    originRequest:
+      originServerName: {{ domain_value }}
+{% endfor %}
+  - service: http_status:404
+

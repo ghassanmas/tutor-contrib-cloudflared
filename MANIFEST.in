@@ -1,0 +1,2 @@
+recursive-include tutorcloudflared/patches *
+recursive-include tutorcloudflared/templates *
