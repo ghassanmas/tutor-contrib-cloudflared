@@ -99,10 +99,3 @@ def get_conflicted_hosts(hosts: Dict[str,str],root_domain: str)-> Dict[str,str]:
     "It filters hosts that don't share same fld with root domain"
     return {host_key:host_value for host_key, host_value in hosts.items() 
     if get_first_level_domain(host_value) != root_domain}
-
-def get_domains(configs):
-    return dict(
-        (host, value) for host, value in 
-        [(host, configs.get(host)) for host in configs] 
-        if value is not None
-    )

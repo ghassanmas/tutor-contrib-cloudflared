@@ -142,7 +142,7 @@ from tutor import hooks
 hooks.Filters.ENV_PATCHES.add_item(
   ("openedx-lms-common-settings",
   """
-  SHARED_COOKIE_DOMAIN = "{{ LMS_HOST|common_domain(PREVIEW_LMS_HOST) }}"
+SHARED_COOKIE_DOMAIN = "{{ LMS_HOST|common_domain(PREVIEW_LMS_HOST) }}"
   """
   )
 )

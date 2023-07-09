@@ -31,7 +31,7 @@ def cloudflared() -> None:
 
 
 @cloudflared.command()
-def set_tunnel_uuid() -> list[tuple[str, str]]:
+def set_tunnel_uuid() -> None:
     """
     This command would set the UUID of the cloudfalred tunnel as a config value, given it would 
     be used for rednering. 
@@ -62,10 +62,10 @@ This command would do the following checks in order:
     fatal_errors = 0
    # click.echo(result)
     configs = config.load(context.root)
-    lms_host = get_first_level_domain(configs['LMS_HOST'])
+    lms_host: str = get_first_level_domain(configs['LMS_HOST'])
 
     first_level_domain = get_first_level_domain(lms_host)
-    is_lms_fld = first_level_domain == lms_host
+   # is_lms_fld = first_level_domain == lms_host
     fmt.echo_info(fmt.title("Checking if it's the defautl overhang.io domain"))
     if lms_host == 'overhang.io':
         fatal_errors += 1

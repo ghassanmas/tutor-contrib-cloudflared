@@ -8,6 +8,7 @@ import subprocess
 import click
 import pkg_resources
 import appdirs
+import typing as t
 
 from tutor import hooks
 from tutor import config
@@ -37,8 +38,6 @@ hooks.Filters.CONFIG_DEFAULTS.add_items(
         ("CLOUDFLARED_PUBLIC_HOSTS", TUTOR_PUBLIC_HOSTS)
     ]
 )
-
-
 
 
 ########################################
@@ -182,12 +181,14 @@ for path in glob(
             (os.path.basename(path), patch_file.read()))
 
 
-def iter_domains():
+def iter_domains() -> t.Iterable[tuple[str, str]]:
+    "It yield host_key, host_value of CLOUDFLARED_PUBLIC_HOSTS that are set"
     root = appdirs.user_data_dir(__app__)
     print(root)
     configs = config.load(root)
-    domains = dict(zip(configs.get('CLOUDFLARED_PUBLIC_HOSTS'), [configs.get(
-        host) for host in TUTOR_PUBLIC_HOSTS if configs.get(host) is not None]))
+    hosts_keys = configs.get('CLOUDFLARED_PUBLIC_HOSTS')
+    domains = dict(zip(hosts_keys, [configs.get(
+        host) for host in hosts_keys if configs.get(host) is not None]))
     yield from domains.items()
 
 
@@ -232,9 +233,6 @@ hooks.Filters.CLI_DO_COMMANDS.add_item(get_tunnel_uuid)
 # To define a command group for your plugin, you would define a Click
 # group and then add it to CLI_COMMANDS:
 hooks.Filters.CLI_COMMANDS.add_item(cloudfalred_group)
-
-
-
 
 
 # Then, you would add subcommands directly to the Click group, for example:

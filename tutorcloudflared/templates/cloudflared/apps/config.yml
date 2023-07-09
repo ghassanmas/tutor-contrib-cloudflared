@@ -3,7 +3,7 @@ credentials-file: /root/.cloudflared/{{ CLOUDFLARED_TUNNEL_UUID }}.json
 ingress:
 {% for domain_name, domain_value in iter_domains() %}
   - hostname: {{ domain_value }}
-    service: http://caddy:{{ CADDY_HTTP_PORT }}
+    service: http://caddy
     originRequest:
       originServerName: {{ domain_value }}
 {% endfor %}

@@ -8,10 +8,10 @@ The tutor clouflared plugin, is a plugin that integrates Open edX tutor tool, wi
 
 ## Table of Contents
 
-- [1.Use Cases](#1.-use-cases)
+- [1.Use Cases](#1-use-cases)
   - [1.1 Reducing Open edX cost](#11-reducing-open-edx-cost)
   - [1.2 Sharing local development stack](#12-sharing-local-development-stack)
-  - [1.3 Extra secuirty](#13-extra-secuirty)
+  - [1.3 Extra secuirty](#13-extra-security)
 - [2. Installation and Usage](#2-installation-and-usage)
   - [2.1 Prerequisites](#21-prerequisites)
   - [2.2 Installation](#22-installation)
@@ -48,6 +48,7 @@ When using this plugin, there would be no need to allow incoming traffic to the 
 
 1. Owning a domain, cost about ~12 USD per year.
 2. Have the domain NS server be handled by Cloudflare, [set your nameserver to behandled by cloudfalre](https://developers.cloudflare.com/dns/zone-setups/full-setup/setup/) _if your domain is not already on cloudflare_.
+3. Have tutor version >= 16 locally installed. [See tutor docs](https://docs.tutor.overhang.io/install.html)
 
 ## 2.2 Installation
 
@@ -64,6 +65,12 @@ tutor plguins enable cloudflared
 tutor config save
 ```
 
+There are important tutor settings to be set so that `https` works as expected see [tutor proxy doc](https://docs.tutor.overhang.io/tutorials/proxy.html#running-open-edx-behind-a-web-proxy).
+_This is beacuse cloudflared in a away or another runs as proxy server_
+
+- First change the defualt site port to something other than 80 `tutor config save --set CADDY_HTTP_PORT=81`
+- Change web proxy settings `tutor config save --set ENABLE_WEB_PROXY=false`
+
 ### 2.3 Usage
 
 To utilzie this plugin,
@@ -78,7 +85,7 @@ tutor cloudflared doctor
 
 1. It checks that user is not using the default tutor host overhang.io
 2. It checks that all hosts are sharing same root domain
-3. It checks that the root domain nameserver is handled by Cloudflare, this is essetial to utilize cloudflared tunnel service. 
+3. It checks that the root domain nameserver is handled by Cloudflare, this is essetial to utilize cloudflared tunnel service.
 4. it checks if LMS_HOST is a subdomain because of cloudflare restricrtion If this is true then tutor by default would assing several hosts as subdomain of subdomain. However subdomain.subdomain.domain.tld can only be used if user is utilziing advance certficate from cloudflare which is not free.
 
 ### 2.3.2 Login and Initialization
@@ -145,7 +152,7 @@ from tutor import hooks
 hooks.Filters.ENV_PATCHES.add_item(
   ("openedx-lms-common-settings",
   """
-  SHARED_COOKIE_DOMAIN = "{{ LMS_HOST|common_domain(PREVIEW_LMS_HOST) }}"
+SHARED_COOKIE_DOMAIN = "{{ LMS_HOST|common_domain(PREVIEW_LMS_HOST) }}"
   """
   )
 )
