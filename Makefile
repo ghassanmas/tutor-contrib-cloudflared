@@ -4,7 +4,7 @@ SRC_DIRS = ./tutorcloudflared
 BLACK_OPTS = --exclude templates ${SRC_DIRS}
 
 # Warning: These checks are not necessarily run on every PR.
-test: test-lint test-types test-format  # Run some static checks.
+test: test-lint test-types test-format test-unit  # Run some static checks.
 
 test-format: ## Run code formatting tests
 	black --check --diff $(BLACK_OPTS)
@@ -17,6 +17,9 @@ test-types: ## Run type checks.
 
 format: ## Format code automatically
 	black $(BLACK_OPTS)
+
+test-unit:  ## Run unit test
+	python -m unittest
 
 isort: ##  Sort imports. This target is not mandatory because the output may be incompatible with black formatting. Provided for convenience purposes.
 	isort --skip=templates ${SRC_DIRS}
