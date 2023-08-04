@@ -61,7 +61,7 @@ pip install git+https://github.com/ghassanmas/tutor-contrib-cloudflared
 Then enable the plugin by:
 
 ```bash
-tutor plguins enable cloudflared
+tutor plugins enable cloudflared
 tutor config save
 ```
 
@@ -90,7 +90,7 @@ tutor cloudflared doctor
 
 ### 2.3.2 Login and Initialization
 
-First build the image by `tutor iamges build cloudfalred`
+First build the image by `tutor images build cloudflared`
 
 `tutor local do init --limit=cloudflared`
 
@@ -107,7 +107,7 @@ The init command will do the following
 
 `tutor cloudflared set-tunnel-uuid`
 
-This command would set the UUID of the cloudfalred tunnel as a config value, given it would be used for rednering.
+This command would set the UUID of the cloudflared tunnel as a config value, given it would be used for rednering.
 
 ### 2.3.4 Launch it
 
@@ -171,7 +171,7 @@ And finally restart the lms.
 
 The docker image is build because the default cloudflared docker image doesn't work with tutor.
 
-Spefically tutor expects the value of `ENTRYPOINT` not be set or to take it from docker arg. Which is not the case for cloudfalred default image[^6]
+Spefically tutor expects the value of `ENTRYPOINT` not be set or to take it from docker arg. Which is not the case for cloudflared default image[^6]
 
 ## 5. License
 
@@ -184,4 +184,4 @@ This software is licensed under the terms of the AGPLv3.
 [^3]: Also called [Zero trust security model](https://en.wikipedia.org/wiki/Zero_trust_security_model)
 [^4]: [Cloudfalre free ssl subdomain level](https://developers.cloudflare.com/ssl/edge-certificates/universal-ssl/limitations/)
 [^5]: Tutor upstream [issue#557](https://github.com/overhangio/tutor/issues/557)
-[^6]: [Cloudfalred Dockerfile](https://github.com/cloudflare/cloudflared/blob/5aaab967a345124913f546b4412b0581ec570139/Dockerfile#L30)
+[^6]: [Cloudflare Dockerfile](https://github.com/cloudflare/cloudflared/blob/5aaab967a345124913f546b4412b0581ec570139/Dockerfile#L30)
